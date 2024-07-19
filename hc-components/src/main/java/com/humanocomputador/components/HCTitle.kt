@@ -23,13 +23,14 @@ fun HCTitle(
     isItalic: Boolean = false,
     color: Color = MaterialTheme.colorScheme.onPrimary,
     fontSize: Float = 22f,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    horizontalArrangement: Arrangement.Horizontal = Arrangement.Center
 ) {
     Row(
         modifier = modifier
             .fillMaxWidth()
             .padding(8.dp),
-        horizontalArrangement = Arrangement.Center
+        horizontalArrangement = horizontalArrangement
     ) {
         Text(
             text = text,

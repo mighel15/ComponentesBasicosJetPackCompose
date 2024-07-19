@@ -31,6 +31,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.graphics.painter.Painter
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.Dp
@@ -39,19 +40,24 @@ import androidx.wear.compose.material.ContentAlpha
 import androidx.wear.compose.material.LocalContentAlpha
 
 @Composable
-fun HCItemCard(
+fun HCCardPerfilUsuario(
     modifier: Modifier = Modifier,
     elevation: Dp = 1.dp,
     border: BorderStroke? = null,
     background: Color = MaterialTheme.colorScheme.surface,
     contentColor: Color = contentColorFor(background),
     shape: Shape = MaterialTheme.shapes.medium,
-    thumbnailPainter: Painter,
-    title: String,
-    subtitle: String,
+    imagenPerfil: Painter,
+    nombre: String,
+    cargo: String,
+    onClickCambiarPerfil: () -> Unit,
+    onClickCerrarSesion: () -> Unit,
     menuItems: List<String>,
     onMenuItemClick: (String) -> Unit,
-    esPrincipal: Boolean = false
+    gridHeaders: List<String> = emptyList(),
+    gridData: List<String> = emptyList(),
+    gridColumns: Int,
+    estado: String = "Activo",
 ) {
     var menuExpandido by rememberSaveable { mutableStateOf(false) }
 
@@ -67,10 +73,11 @@ fun HCItemCard(
                 .fillMaxWidth()
                 .padding(8.dp)
         ) {
-            HCCircleIcon(
-                painter = thumbnailPainter,
-                contentDescription = "Icono de card",
-                size = 60.dp
+            HCSquareAvatar(
+                painter = imagenPerfil,
+                contentDescription = "Avatar de persona",
+                size = 80.dp,
+                borderColor = MaterialTheme.colorScheme.primary
             )
 
             Spacer(modifier = Modifier.width(10.dp))
@@ -78,11 +85,10 @@ fun HCItemCard(
             Column(
                 Modifier
                     .weight(4f)
-                    //.fillMaxHeight()
                     .align(Alignment.CenterVertically)
             ) {
                 Text(
-                    text = title,
+                    text = nombre,
                     style = MaterialTheme.typography.titleLarge,
                     maxLines = 1,
                     overflow = TextOverflow.Ellipsis
@@ -94,7 +100,7 @@ fun HCItemCard(
 
                 CompositionLocalProvider(LocalContentAlpha provides ContentAlpha.medium) {
                     Text(
-                        text = subtitle,
+                        text = cargo,
                         style = MaterialTheme.typography.bodyMedium,
                         maxLines = 1,
                         overflow = TextOverflow.Ellipsis
@@ -131,18 +137,53 @@ fun HCItemCard(
                         )
                     }
                 }
-                if (esPrincipal){
-                    CompositionLocalProvider(LocalContentAlpha provides ContentAlpha.medium) {
-                        Text(
-                            text = "Principal",
-                            style = MaterialTheme.typography.bodySmall.copy(
-                                fontWeight = FontWeight.Bold,
-                                color = MaterialTheme.colorScheme.onPrimary
-                            ),
-                            modifier = Modifier.align(Alignment.End)
-                        )
-                    }
+                CompositionLocalProvider(LocalContentAlpha provides ContentAlpha.medium) {
+                    Text(
+                        text = estado,
+                        style = MaterialTheme.typography.bodySmall.copy(
+                            fontWeight = FontWeight.Bold,
+                            color = MaterialTheme.colorScheme.primary
+                        ),
+                        modifier = Modifier.align(Alignment.End)
+                    )
                 }
+
+            }
+        }
+
+        HorizontalDivider(modifier = Modifier.padding(vertical = 8.dp))
+
+        Column(modifier = Modifier.padding(16.dp)) {
+            if (gridHeaders.isNotEmpty() || gridData.isNotEmpty()) {
+
+                HCGridData(
+                    headers = gridHeaders,
+                    data = gridData,
+                    columns = gridColumns
+                )
+            }
+
+            Row(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(top = 10.dp),
+                horizontalArrangement = Arrangement.spacedBy(5.dp)
+            ) {
+                HCButtonSolid(
+                    text = "Cambiar Perfil",
+                    icon = painterResource(R.drawable.ico_simule_24),
+                    onClick = onClickCambiarPerfil,
+                    modifier = Modifier.weight(1f),
+                    enabled = true
+                )
+
+                HCButtonSolid(
+                    text = "Cerrar Sesion",
+                    icon = painterResource(R.drawable.ico_exit_24),
+                    onClick = onClickCerrarSesion,
+                    modifier = Modifier.weight(1f),
+                    enabled = true
+                )
             }
         }
     }
@@ -151,15 +192,26 @@ fun HCItemCard(
 //@Preview(showBackground = true)
 //@Composable
 //private fun PreviewVisualizacion(){
-//    val menuItems = listOf("Guardar", "Editar", "Eliminar")
-//    HCItemCard(
-//        thumbnailPainter = painterResource(id = R.drawable.img_user_tag),
-//        title = "Título",
-//        subtitle = "Texto secundario",
+//    val menuItems = listOf("Cambiar Contraseña", "Editar Datos", "Solicitar Soporte")
+//    val headers = listOf("Nombre", "Edad", "Dirección")
+//    val data = listOf("-", "Juan Pérez", "30")
+//
+//    HCCardPerfilUsuario(
+//        imagenPerfil = painterResource(id = R.drawable.img_foto_perfil_example),
+//        nombre = "Título",
+//        cargo = "Texto secundario",
+//        background = MaterialTheme.colorScheme.background,
+//        onClickCambiarPerfil = {},
+//        onClickCerrarSesion = {},
 //        menuItems = menuItems,
 //        onMenuItemClick = { selectedOption ->
 //            println("Selected: $selectedOption")
 //        },
-//        esPrincipal = true
+//        gridHeaders = headers,
+//        gridData = data,
+//        gridColumns = 1,
+//        estado = "Inactivo"
 //    )
 //}
+
+

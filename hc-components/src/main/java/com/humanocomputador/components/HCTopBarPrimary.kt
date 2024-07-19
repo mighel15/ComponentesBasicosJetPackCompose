@@ -21,11 +21,11 @@ fun HCTopBarPrimary(
     onActionClicks: List<() -> Unit>
 ) {
     TopAppBar(
-        navigationIcon = {
-            IconButton(onClick = onNavigationClick) {
-                Icon(imageVector = navigationIcon, contentDescription = navigationIconDescription)
-            }
-        },
+//        navigationIcon = {
+//            IconButton(onClick = onNavigationClick) {
+//                Icon(imageVector = navigationIcon, contentDescription = navigationIconDescription)
+//            }
+//        },
         title = { Text(text = title) },
         actions = {
             actions.forEachIndexed { index, action ->

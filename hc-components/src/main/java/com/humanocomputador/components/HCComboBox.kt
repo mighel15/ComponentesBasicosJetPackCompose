@@ -29,7 +29,7 @@ fun HCComboBox(
     error: String? = null
 ) {
     var expanded by remember { mutableStateOf(false) }
-    var text by remember { mutableStateOf(options[0]) }
+    var text by remember { mutableStateOf(if (options.isNotEmpty()) options[0] else "") }
     val isError = error != null
 
     ExposedDropdownMenuBox(
@@ -67,6 +67,7 @@ fun HCComboBox(
                     text = { Text(option, style = MaterialTheme.typography.bodyLarge) },
                     onClick = {
                         onOptionSelected(option)
+                        text = option
                         expanded = false
                     },
                     contentPadding = ExposedDropdownMenuDefaults.ItemContentPadding,
