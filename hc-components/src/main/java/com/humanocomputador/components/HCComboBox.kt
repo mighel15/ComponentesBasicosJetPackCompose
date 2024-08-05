@@ -34,8 +34,8 @@ fun HCComboBox(
     val isError = error != null
 
     ExposedDropdownMenuBox(
-        expanded = expanded,
-        onExpandedChange = { expanded = it },
+        expanded = expanded && enabled,
+        onExpandedChange = { if (enabled) expanded = it },
         modifier = modifier
     ) {
         Column (modifier = Modifier.padding(bottom = 4.dp)) {
@@ -60,20 +60,23 @@ fun HCComboBox(
             }
         }
 
-        ExposedDropdownMenu(
-            expanded = expanded,
-            onDismissRequest = { expanded = false }
-        ) {
-            options.forEach { option ->
-                DropdownMenuItem(
-                    text = { Text(option, style = MaterialTheme.typography.bodyLarge) },
-                    onClick = {
-                        onOptionSelected(option)
-                        text = option
-                        expanded = false
-                    },
-                    contentPadding = ExposedDropdownMenuDefaults.ItemContentPadding,
-                )
+        if (enabled) {
+            ExposedDropdownMenu(
+                expanded = expanded,
+                onDismissRequest = { expanded = false }
+            ) {
+                options.forEach { option ->
+                    DropdownMenuItem(
+                        text = { Text(option, style = MaterialTheme.typography.bodyLarge) },
+                        onClick = {
+                            onOptionSelected(option)
+                            text = option
+                            expanded = false
+                        },
+                        contentPadding = ExposedDropdownMenuDefaults.ItemContentPadding,
+                        //enabled = enabled
+                    )
+                }
             }
         }
     }
