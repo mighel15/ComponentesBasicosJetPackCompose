@@ -27,10 +27,10 @@ fun HCButtonMenuOutlined(
 ) {
     OutlinedButton(
         onClick = onClick,
-        modifier = modifier.fillMaxWidth().height(50.dp),
+        modifier = modifier.fillMaxWidth().height(60.dp),
         shape = RoundedCornerShape(5.dp),
         enabled = enabled,
-        border = BorderStroke(3.dp, borderColor)
+        border = BorderStroke(1.dp, borderColor)
     ) {
         Row(
             modifier = Modifier.fillMaxWidth(),

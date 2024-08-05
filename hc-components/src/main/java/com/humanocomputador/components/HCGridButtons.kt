@@ -23,12 +23,13 @@ fun HCGridButtons(
     onItemClick: (Int) -> Unit = {}
 ) {
     Column(modifier = modifier.padding(8.dp)) {
-        items.chunked(columns).forEach { row ->
+        items.chunked(columns).forEachIndexed { rowIndex, row ->
             Row(
                 modifier = Modifier.fillMaxWidth(),
                 horizontalArrangement = Arrangement.SpaceBetween
             ) {
-                row.forEachIndexed { index, item ->
+                row.forEachIndexed { columnIndex, item ->
+                    val overallIndex = rowIndex * columns + columnIndex
                     Box(
                         modifier = Modifier
                             .weight(1f)
@@ -38,7 +39,7 @@ fun HCGridButtons(
                         HCButtonSquare(
                             image = item.first,
                             text = item.second,
-                            onClick = { onItemClick(index) }
+                            onClick = { onItemClick(overallIndex) }
                         )
                     }
                 }

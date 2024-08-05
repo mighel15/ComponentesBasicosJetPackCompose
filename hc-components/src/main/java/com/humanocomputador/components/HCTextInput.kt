@@ -26,7 +26,8 @@ fun HCTextInput(
     keyboardType: KeyboardType = KeyboardType.Text,
     modifier: Modifier = Modifier,
     counterMaxLength: Int? = null,
-    readOnly: Boolean = false
+    readOnly: Boolean = false,
+    enabled: Boolean = true
 ) {
     val isError = error != null
     val isCounter = counterMaxLength != null
@@ -51,6 +52,7 @@ fun HCTextInput(
             },
             label = { Text(label, maxLines = 1) },
             readOnly = readOnly,
+            enabled = enabled,
             singleLine = isSingleLine,
             keyboardOptions = KeyboardOptions(keyboardType = keyboardType),
             isError = isError,
