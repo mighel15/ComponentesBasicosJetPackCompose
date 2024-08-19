@@ -20,24 +20,27 @@ fun HCTextInputOnlyRead(
     label: String,
     isSingleLine: Boolean = false,
     modifier: Modifier = Modifier,
-    enabled: Boolean = true
+    enabled: Boolean = true,
+    icono: Boolean = true
 ) {
-    var text by rememberSaveable { mutableStateOf(value) }
+    //var text by rememberSaveable { mutableStateOf(value) }
 
     Column(modifier = modifier.fillMaxWidth()) {
         OutlinedTextField(
-            value = text,
+            value = value,
             onValueChange = { },
             label = { Text(label, maxLines = 1) },
             readOnly = true,
             singleLine = isSingleLine,
             modifier = Modifier.fillMaxWidth(),
-            trailingIcon = {
-                Icon(
-                    painter = painterResource(id = R.drawable.ico_lock_24),
-                    contentDescription = "description"
-                )
-            },
+            leadingIcon = if (icono) {
+                {
+                    Icon(
+                        painter = painterResource(id = R.drawable.ico_lock_24),
+                        contentDescription = "description"
+                    )
+                }
+            } else null,
             enabled = enabled
         )
     }

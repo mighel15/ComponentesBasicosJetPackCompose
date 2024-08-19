@@ -137,7 +137,7 @@ fun HCItemCard(
                             text = "Principal",
                             style = MaterialTheme.typography.bodySmall.copy(
                                 fontWeight = FontWeight.Bold,
-                                color = MaterialTheme.colorScheme.onPrimary
+                                color = MaterialTheme.colorScheme.primary
                             ),
                             modifier = Modifier.align(Alignment.End)
                         )

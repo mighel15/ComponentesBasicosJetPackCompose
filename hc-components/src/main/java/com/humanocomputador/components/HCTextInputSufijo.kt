@@ -39,18 +39,19 @@ fun HCTextInputSufijo(
     modifier: Modifier = Modifier,
     counterMaxLength: Int? = null,
     keyboardType: KeyboardType = KeyboardType.Number,
-    textAlign: TextAlign = TextAlign.End
+    textAlign: TextAlign = TextAlign.End,
+    enabled: Boolean = true,
+    readOnly: Boolean = false
 ) {
-    var text by rememberSaveable { mutableStateOf(value) }
+    //var text by rememberSaveable { mutableStateOf(value) }
     val isError = error != null
     val isCounter = counterMaxLength != null
 
     Column(modifier = modifier.fillMaxWidth()) {
         OutlinedTextField(
-            value = text,
+            value = value,
             onValueChange = {
                 if (counterMaxLength == null || it.length <= counterMaxLength) {
-                    text = it
                     onValueChange(it)
                 }
             },
@@ -65,7 +66,9 @@ fun HCTextInputSufijo(
             keyboardOptions = KeyboardOptions(keyboardType = keyboardType),
             singleLine = isSingleLine,
             isError = isError,
-            modifier = Modifier.fillMaxWidth()
+            modifier = Modifier.fillMaxWidth(),
+            enabled = enabled,
+            readOnly = readOnly
         )
         Row(
             modifier = Modifier
@@ -84,7 +87,7 @@ fun HCTextInputSufijo(
             Spacer(modifier = Modifier.weight(1f))
             if (isCounter) {
                 Text(
-                    text = "${text.length}/$counterMaxLength",
+                    text = "${value.length}/$counterMaxLength",
                     color = MaterialTheme.colorScheme.onSurface.copy(alpha = ContentAlpha.medium),
                     style = MaterialTheme.typography.bodySmall
                 )

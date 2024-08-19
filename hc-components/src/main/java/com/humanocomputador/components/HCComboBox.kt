@@ -27,7 +27,8 @@ fun HCComboBox(
     onOptionSelected: (String) -> Unit,
     modifier: Modifier = Modifier,
     error: String? = null,
-    enabled: Boolean = true
+    enabled: Boolean = true,
+    enabledSelectable: Boolean = true
 ) {
     var expanded by remember { mutableStateOf(false) }
     var text by remember { mutableStateOf(if (options.isNotEmpty()) options[0] else "") }
@@ -48,7 +49,7 @@ fun HCComboBox(
                 label = { Text(label, maxLines = 1) },
                 trailingIcon = { ExposedDropdownMenuDefaults.TrailingIcon(expanded = expanded) },
                 isError = isError,
-                enabled = enabled
+                enabled = enabledSelectable,
             )
             if (isError) {
                 Text(

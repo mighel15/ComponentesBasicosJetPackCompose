@@ -19,10 +19,12 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.text.SpanStyle
+import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.OffsetMapping
 import androidx.compose.ui.text.input.TransformedText
 import androidx.compose.ui.text.input.VisualTransformation
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.wear.compose.material.ContentAlpha
 import kotlin.math.max
@@ -36,26 +38,36 @@ fun HCTextInputPrefijo(
     isSingleLine: Boolean = true,
     modifier: Modifier = Modifier,
     prefix: String,
+    prefixColor: Color = Color.Gray,
     keyboardType: KeyboardType = KeyboardType.Number,
-    counterMaxLength: Int? = null
+    counterMaxLength: Int? = null,
+    readOnly: Boolean = false,
+    enabled: Boolean = true,
+    textAlign: TextAlign = TextAlign.Start
 ) {
-    var text by rememberSaveable { mutableStateOf(value) }
+    //var text by rememberSaveable { mutableStateOf(value) }
     val isError = error != null
     val isCounter = counterMaxLength != null
 
     Column(modifier = modifier.fillMaxWidth()) {
         OutlinedTextField(
-            value = text,
+            value = value,
             onValueChange = {
                 if (counterMaxLength == null || it.length <= counterMaxLength) {
-                    text = it
                     onValueChange(it)
                 }
             },
             label = { Text(label, maxLines = 1) },
-            visualTransformation = PrefixVisualTransformation(prefix),
+            textStyle = TextStyle(
+                fontSize = MaterialTheme.typography.bodyLarge.fontSize,
+                fontFamily = MaterialTheme.typography.bodyLarge.fontFamily,
+                textAlign = textAlign
+            ),
+            visualTransformation = PrefixVisualTransformation(prefix, prefixColor),
             keyboardOptions = KeyboardOptions(keyboardType = keyboardType),
             singleLine = isSingleLine,
+            readOnly = readOnly,
+            enabled = enabled,
             isError = isError,
             modifier = Modifier.fillMaxWidth()
         )
@@ -76,7 +88,7 @@ fun HCTextInputPrefijo(
             Spacer(modifier = Modifier.weight(1f))
             if (isCounter) {
                 Text(
-                    text = "${text.length}/$counterMaxLength",
+                    text = "${value.length}/$counterMaxLength",
                     color = MaterialTheme.colorScheme.onSurface.copy(alpha = ContentAlpha.medium),
                     style = MaterialTheme.typography.bodySmall
                 )
@@ -85,20 +97,20 @@ fun HCTextInputPrefijo(
     }
 }
 
-class PrefixVisualTransformation(private val prefix: String) : VisualTransformation {
+class PrefixVisualTransformation(private val prefix: String, private val prefixColor: Color) : VisualTransformation {
     override fun filter(text: AnnotatedString): TransformedText {
         val spacer = " "
-        val transformedText = AnnotatedString(prefix + spacer, SpanStyle(Color.Gray)) + text
+        val transformedText = AnnotatedString(prefix + spacer, SpanStyle(prefixColor)) + text
 
-        return TransformedText(transformedText, PrefixOffsetMapping(prefix))
+        return TransformedText(transformedText, PrefixOffsetMapping(prefix.length + spacer.length))
     }
 }
 
-class PrefixOffsetMapping(private val prefix: String) : OffsetMapping {
-    override fun originalToTransformed(offset: Int): Int = offset + prefix.length
+class PrefixOffsetMapping(private val prefixLength: Int) : OffsetMapping {
+    override fun originalToTransformed(offset: Int): Int = offset + prefixLength
 
     override fun transformedToOriginal(offset: Int): Int {
-        return max(offset - prefix.length, 0)
+        return max(offset - prefixLength, 0)
     }
 }
 

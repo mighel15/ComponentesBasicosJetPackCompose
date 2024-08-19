@@ -6,6 +6,7 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
@@ -15,6 +16,9 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.input.KeyboardType
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.wear.compose.material.ContentAlpha
 
@@ -27,24 +31,35 @@ fun HCTextInputMainIcon(
     isSingleLine: Boolean = true,
     modifier: Modifier = Modifier,
     counterMaxLength: Int? = null,
-    leadingIcon: @Composable () -> Unit
+    leadingIcon: @Composable () -> Unit,
+    keyboardType: KeyboardType = KeyboardType.Text,
+    readOnly: Boolean = false,
+    enabled: Boolean = true,
+    textAlign: TextAlign = TextAlign.Start
 ) {
-    var text by rememberSaveable { mutableStateOf(value) }
+    //var text by rememberSaveable { mutableStateOf(value) }
     val isError = error != null
     val isCounter = counterMaxLength != null
 
     Column(modifier = modifier.fillMaxWidth()) {
         OutlinedTextField(
-            value = text,
+            value = value,
             onValueChange = {
                 if (counterMaxLength == null || it.length <= counterMaxLength) {
-                    text = it
                     onValueChange(it)
                 }
             },
             label = { Text(label, maxLines = 1) },
             leadingIcon = leadingIcon,
             singleLine = isSingleLine,
+            readOnly = readOnly,
+            enabled = enabled,
+            textStyle = TextStyle(
+                fontSize = MaterialTheme.typography.bodyLarge.fontSize,
+                fontFamily = MaterialTheme.typography.bodyLarge.fontFamily,
+                textAlign = textAlign
+            ),
+            keyboardOptions = KeyboardOptions(keyboardType = keyboardType),
             isError = isError,
             modifier = Modifier.fillMaxWidth()
         )
@@ -65,7 +80,7 @@ fun HCTextInputMainIcon(
             Spacer(modifier = Modifier.weight(1f))
             if (isCounter) {
                 Text(
-                    text = "${text.length}/$counterMaxLength",
+                    text = "${value.length}/$counterMaxLength",
                     color = MaterialTheme.colorScheme.onSurface.copy(alpha = ContentAlpha.medium),
                     style = MaterialTheme.typography.bodySmall
                 )

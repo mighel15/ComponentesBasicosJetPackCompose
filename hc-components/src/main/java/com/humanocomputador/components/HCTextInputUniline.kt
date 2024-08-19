@@ -27,16 +27,15 @@ fun HCTextInputUniline(
     modifier: Modifier = Modifier,
     counterMaxLength: Int? = null
 ) {
-    var text by rememberSaveable { mutableStateOf(value) }
+    //var text by rememberSaveable { mutableStateOf(value) }
     val isError = error != null
     val isCounter = counterMaxLength != null
 
     Column(modifier = modifier.fillMaxWidth()) {
         OutlinedTextField(
-            value = text,
+            value = value,
             onValueChange = {
                 if (counterMaxLength == null || it.length <= counterMaxLength) {
-                    text = it
                     onValueChange(it)
                 }
             },
@@ -62,7 +61,7 @@ fun HCTextInputUniline(
             Spacer(modifier = Modifier.weight(1f))
             if (isCounter) {
                 Text(
-                    text = "${text.length}/$counterMaxLength",
+                    text = "${value.length}/$counterMaxLength",
                     color = MaterialTheme.colorScheme.onSurface.copy(alpha = ContentAlpha.medium),
                     style = MaterialTheme.typography.bodySmall
                 )

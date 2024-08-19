@@ -144,7 +144,7 @@ fun HCItemCardExtended(
                             text = "Principal",
                             style = MaterialTheme.typography.bodySmall.copy(
                                 fontWeight = FontWeight.Bold,
-                                color = MaterialTheme.colorScheme.onPrimary
+                                color = MaterialTheme.colorScheme.primary
                                 //color = colorResource(id = R.color.cr_azul)
                             ),
                             modifier = Modifier.align(Alignment.End)
