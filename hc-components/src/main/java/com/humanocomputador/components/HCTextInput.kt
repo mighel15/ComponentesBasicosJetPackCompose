@@ -12,7 +12,9 @@ import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.input.KeyboardType
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.wear.compose.material.ContentAlpha
 
@@ -27,7 +29,8 @@ fun HCTextInput(
     modifier: Modifier = Modifier,
     counterMaxLength: Int? = null,
     readOnly: Boolean = false,
-    enabled: Boolean = true
+    enabled: Boolean = true,
+    textAlign: TextAlign = TextAlign.Start
 ) {
     val isError = error != null
     val isCounter = counterMaxLength != null
@@ -55,6 +58,12 @@ fun HCTextInput(
             enabled = enabled,
             singleLine = isSingleLine,
             keyboardOptions = KeyboardOptions(keyboardType = keyboardType),
+            // para el estilo de la fuente por defecto solo comentar esto
+            textStyle = TextStyle(
+                fontSize = MaterialTheme.typography.bodyLarge.fontSize,
+                fontFamily = MaterialTheme.typography.bodyLarge.fontFamily,
+                textAlign = textAlign
+            ),
             isError = isError,
             modifier = Modifier.fillMaxWidth()
         )
@@ -90,6 +99,13 @@ fun HCTextInput(
 //        value = "Este es un valor de prueba",
 //        label = "Encabezado",
 //        onValueChange = {},
-//        //error = "Este campo es requerido",
+//        error = "Este campo es requerido",
+//        isSingleLine = true,
+//        keyboardType = KeyboardType.Text,
+//        modifier = Modifier,
+//        counterMaxLength = 100,
+//        readOnly = false,
+//        enabled = true,
+//        textAlign = TextAlign.Start
 //    )
 //}

@@ -22,7 +22,8 @@ fun HCIconButtonSolid(
     description: String,
     modifier: Modifier = Modifier,
     enabled: Boolean = true,
-    colors: ButtonColors = ButtonDefaults.buttonColors(containerColor = Color(android.graphics.Color.parseColor("#003B73")))
+    colors: ButtonColors = ButtonDefaults.buttonColors()
+    //colors: ButtonColors = ButtonDefaults.buttonColors(containerColor = Color(android.graphics.Color.parseColor("#003B73")))
 ) {
     Button(
         onClick = onClick,
@@ -36,7 +37,7 @@ fun HCIconButtonSolid(
             Icon(
                 painter = icon,
                 contentDescription = description,
-                tint = Color.White, // El color del icono para que contraste con el fondo azul
+                tint = Color.White,
             )
         }
     }
