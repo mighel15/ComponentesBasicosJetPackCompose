@@ -1,9 +1,11 @@
 package com.humanocomputador.components
 
+import android.app.Activity
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.width
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
+import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -13,6 +15,10 @@ import androidx.compose.material3.TextButton
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.painterResource
@@ -29,9 +35,11 @@ fun HCTopAppBarSaveable(
     actions: List<Pair<Int, String>>,
     onActionClicks: List<() -> Unit>
 ) {
+    var showConfirmationDialog by remember { mutableStateOf(false) }
+
     TopAppBar(
         navigationIcon = {
-            IconButton(onClick = { navController?.navigateUp() }) {
+            IconButton(onClick = { showConfirmationDialog = true }) { //boton regresar
                 Icon(
                     imageVector = navigationIcon,
                     contentDescription = navigationIconDescription,
@@ -67,6 +75,41 @@ fun HCTopAppBarSaveable(
             actionIconContentColor = MaterialTheme.colorScheme.onPrimary
         )
     )
+
+    if (showConfirmationDialog) {
+        HCDialog(
+            title = "Confirmar salida",
+            content = "¿Estás seguro de que quieres salir de $title?",
+            confirmButtonText = "Quiero Salir",
+            dismissButtonText = "Cancelar",
+            onDismiss = { showConfirmationDialog = false },
+            onConfirm = {
+                showConfirmationDialog = false
+                navController?.navigateUp()
+            }
+        )
+
+//        AlertDialog(
+//            onDismissRequest = { showConfirmationDialog = false },
+//            title = { Text(text = "Confirmar salida") },
+//            text = { Text(text = "¿Estás seguro de que quieres salir de $title?") },
+//            confirmButton = {
+//                TextButton(
+//                    onClick = {
+//                        showConfirmationDialog = false
+//                        navController?.navigateUp()
+//                    }
+//                ) {
+//                    Text("Sí, Quiero salir")
+//                }
+//            },
+//            dismissButton = {
+//                TextButton(onClick = { showConfirmationDialog = false }) {
+//                    Text("Cancelar")
+//                }
+//            }
+//        )
+    }
 }
 
 //@Preview(showBackground = true)

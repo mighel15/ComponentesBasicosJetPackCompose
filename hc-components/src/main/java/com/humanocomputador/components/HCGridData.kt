@@ -89,7 +89,7 @@ private fun <A, B> List<A>.zipAll(
         first to second
     }
 }
-//
+
 //@Preview(showBackground = true)
 //@Composable
 //private fun PreviewVisualizacion(){

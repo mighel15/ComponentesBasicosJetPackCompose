@@ -6,7 +6,9 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
@@ -29,9 +31,8 @@ fun HCTextInputTexarea(
     isSingleLine: Boolean = false,
     modifier: Modifier = Modifier,
     counterMaxLength: Int? = null,
-    height: Dp = 100.dp
+    minHeight: Dp = 56.dp
 ) {
-    //var text by rememberSaveable { mutableStateOf(value) }
     val isError = error != null
     val isCounter = counterMaxLength != null
 
@@ -46,7 +47,10 @@ fun HCTextInputTexarea(
             label = { Text(label, maxLines = 1) },
             singleLine = isSingleLine,
             isError = isError,
-            modifier = Modifier.fillMaxWidth().height(height)
+            modifier = Modifier
+                .fillMaxWidth()
+                .heightIn(min = minHeight)
+                .then(if (isSingleLine) Modifier else Modifier.wrapContentHeight())
         )
         Row(
             modifier = Modifier
@@ -65,7 +69,7 @@ fun HCTextInputTexarea(
             Spacer(modifier = Modifier.weight(1f))
             if (isCounter) {
                 Text(
-                    text = "${value.length}/$counterMaxLength",
+                    text = "${value.length}/${counterMaxLength ?: ""}",
                     color = MaterialTheme.colorScheme.onSurface.copy(alpha = ContentAlpha.medium),
                     style = MaterialTheme.typography.bodySmall
                 )

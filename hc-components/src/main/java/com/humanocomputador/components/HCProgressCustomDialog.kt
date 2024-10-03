@@ -26,6 +26,7 @@ import com.humanocomputador.components.R
 fun HCProgressCustomDialog(
     isLoading: Boolean,
     onDismiss: () -> Unit,
+    text: String = "Cargando...",
     modifier: Modifier = Modifier
 ) {
     val composition by rememberLottieComposition(
@@ -34,7 +35,7 @@ fun HCProgressCustomDialog(
     val reproduciendo by animateLottieCompositionAsState(
         composition = composition,
         iterations = LottieConstants.IterateForever,
-        speed = 0.5f
+        speed = 0.8f
     )
 
     if (isLoading) {
@@ -63,7 +64,7 @@ fun HCProgressCustomDialog(
                         )
 
                         Text(
-                            text = "Cargando...",
+                            text = text,
                             style = MaterialTheme.typography.bodyMedium,
                             modifier = Modifier.padding(top = 20.dp)
                         )

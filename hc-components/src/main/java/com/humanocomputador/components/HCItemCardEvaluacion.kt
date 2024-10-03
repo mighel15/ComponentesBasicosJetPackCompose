@@ -51,7 +51,7 @@ fun HCItemCardEvaluacion(
         shape = shape,
         elevation = CardDefaults.cardElevation(defaultElevation = elevation),
         border = border,
-        modifier = modifier //8
+        modifier = modifier //
     ) {
         Column(
             modifier = Modifier
@@ -94,7 +94,6 @@ fun HCItemCardEvaluacion(
                         style = MaterialTheme.typography.bodyLarge,
                         modifier = Modifier.weight(1f)
                     )
-
                     HCCustomRadioButton(
                         selected = alternativa == alternativaSeleccionada,
                         onClick = { onAlternativaSeleccionada(alternativa) }

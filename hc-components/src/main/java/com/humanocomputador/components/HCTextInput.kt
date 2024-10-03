@@ -1,5 +1,6 @@
 package com.humanocomputador.components
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -12,8 +13,11 @@ import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Brush
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.input.KeyboardType
+import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.wear.compose.material.ContentAlpha
@@ -30,10 +34,35 @@ fun HCTextInput(
     counterMaxLength: Int? = null,
     readOnly: Boolean = false,
     enabled: Boolean = true,
-    textAlign: TextAlign = TextAlign.Start
+    visualTransformation: VisualTransformation = VisualTransformation.None,
+    textAlign: TextAlign = TextAlign.Start,
+    customLectura: Boolean = true
 ) {
     val isError = error != null
     val isCounter = counterMaxLength != null
+
+    val backgroundBrush = if (readOnly && customLectura) {
+        Brush.verticalGradient(
+            colors = listOf(
+                Color.Transparent,
+                MaterialTheme.colorScheme.primary.copy(alpha = 0.2f)
+                //Color.Blue.copy(alpha = 0.3f)
+            )
+        )
+    } else {
+        Brush.verticalGradient(
+            colors = listOf(
+                Color.Transparent,
+                Color.Transparent
+            )
+        )
+    }
+
+//    val backgroundColor = if (readOnly && customLectura) {
+//        MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.1f)
+//    } else {
+//        Color.Transparent
+//    }
 
     Column(modifier = modifier.fillMaxWidth()) {
         OutlinedTextField(
@@ -64,8 +93,11 @@ fun HCTextInput(
                 fontFamily = MaterialTheme.typography.bodyLarge.fontFamily,
                 textAlign = textAlign
             ),
+            visualTransformation = visualTransformation,
             isError = isError,
-            modifier = Modifier.fillMaxWidth()
+            modifier = Modifier
+                .fillMaxWidth()
+                .background(brush = backgroundBrush)
         )
         Row(
             modifier = Modifier
